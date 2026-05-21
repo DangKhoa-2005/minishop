@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: minishop_clean_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: minishop
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    volumes:
+      - minishop_clean_postgres:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+
+  # Flask Backend API
+  backend:
+    build: ./backend
+    container_name: minishop_clean_backend
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=postgresql://postgres:postgres123@db:5432/minishop
+      - JWT_SECRET_KEY=super-secret-key-change-in-production
+      - OPENAI_API_KEY=
+    ports:
+      - "5002:5001"
+    depends_on:
+      - db
+    command: >
+      sh -c "sleep 6 && flask db upgrade || true && python seed.py || true && gunicorn --bind 0.0.0.0:5001 --workers 2 run:app"
+
+  # React Frontend
+  frontend:
+    build: ./frontend
+    container_name: minishop_clean_frontend
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+
+volumes:
+  minishop_clean_postgres: {}

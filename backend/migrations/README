@@ -1,0 +1,1 @@
+This is a placeholder for Flask-Migrate/Alembic migrations folder. Please run `flask db init` or `flask db migrate` to initialize migration scripts.

@@ -1,0 +1,1 @@
+## Placeholder for Alembic script.py.mako. Please run `flask db init` to generate the correct file.
