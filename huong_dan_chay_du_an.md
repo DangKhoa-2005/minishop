@@ -22,6 +22,31 @@ docker-compose up --build
 
 ---
 
+## Cách tự động chạy toàn bộ: Docker + E2E Test (Khuyên dùng)
+
+### Yêu cầu
+- **Python 3.7+** (hoặc bất kỳ phiên bản nào)
+- **Docker Desktop** đã cài đặt và chạy sẵn
+- **npm** để cài Playwright
+
+### Chạy mặc định (Windows/Mac/Linux)
+```bash
+python scripts/run_full_automation.py
+```
+
+Script sẽ tự động:
+1. ✅ Kiểm tra Docker có chạy không
+2. ✅ Build và khởi chạy Docker Compose
+3. ✅ Chờ backend/frontend sẵn sàng (tối đa 4 phút)
+4. ✅ Cài đặt Playwright nếu chưa có
+5. ✅ Chạy E2E test toàn bộ flow (guest + customer + admin)
+6. ✅ Dừng và xóa containers (nếu chạy xong)
+
+
+### Test Account (mặc định từ seed.py)
+- **Admin**: `admin@minishop.com` / `admin123`
+- **Customer**: `customer@example.com` / `123456`
+
 ## Cách 2: Chạy thủ công (Manual Setup)
 
 Nếu bạn không dùng Docker, hãy làm theo các bước dưới đây để chạy Server (Backend) và Web (Frontend) độc lập.
